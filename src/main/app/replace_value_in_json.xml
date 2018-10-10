@@ -10,98 +10,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
     
     <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8080" basePath="main" doc:name="HTTP Listener Configuration"/>
     
-		
-	
-    <flow name="replace_value_in_jsonFlow2">
-        <http:listener config-ref="HTTP_Listener_Configuration" path="/rest2" doc:name="HTTP"/>
-        <json:json-to-object-transformer returnClass="java.lang.Object" doc:name="JSON to Object"/>
-        <logger message="#[ 'Received Payload = ' + payload ]" level="INFO" doc:name="Logger"/>
-        <foreach collection="#[message.payload.documents]" doc:name="For Each">
-            <logger message="#[&quot; ***************************** AKASH PRAJAPATI  ***************************** &quot;]" level="INFO" doc:name="Logger"/>
-            <expression-component doc:name="Expression"><![CDATA[message.payload.binaryContent = "fileContent";
-message.payload.attributes[0].id = 11;
-message.payload.attributes[1].id = 22;]]></expression-component>
-        </foreach>
-        <logger message="#[ &quot;Payload After For-Each =&quot; + payload ]" level="INFO" doc:name="Logger"/>
-        <set-variable variableName="originalVar" value="#[message.payload]" doc:name="Variable"/>
-        
-        <json:json-to-object-transformer returnClass="java.util.HashMap" doc:name="JSON to Object"/>
-		<set-variable variableName="var1" value="#[message.payload]" doc:name="Variable"/>
-		
-		<set-payload value="#[ flowVars.originalVar]" mimeType="application/json" doc:name="Set Payload"/>
-		<json:json-to-object-transformer returnClass="java.util.HashMap" doc:name="JSON to Object"/>
-		<set-variable variableName="var2" value="#[message.payload]" doc:name="Variable"/>
-		
-		
-        <expression-transformer doc:name="Expression" expression="#[[ 'Result' :[ flowVars.var1 , flowVars.var2 ]  ] ]" />     
-        <json:object-to-json-transformer doc:name="Object to JSON"/>
-        
-    </flow>
-
-
-	<flow name="replace_value_in_jsonFlow3">
-        <http:listener config-ref="HTTP_Listener_Configuration" path="/rest3" doc:name="HTTP"/>
-        <set-payload value="{
-    &quot;first&quot;: [{
-        &quot;projectid&quot;: &quot;15&quot;,
-        &quot;approval_status&quot;: &quot;A&quot;
-    }, {
-        &quot;projectid&quot;: &quot;24&quot;,
-        &quot;approval_status&quot;: &quot;A&quot;
-    }]
-   }" mimeType="application/json" doc:name="Set Payload"/>
-       <json:json-to-object-transformer returnClass="java.util.HashMap" doc:name="JSON to Object"/>
-        <set-variable variableName="var1" value="#[message.payload]" doc:name="Variable"/>
-
-        <set-payload value="{
-    &quot;Second&quot;: [{
-        &quot;projectid&quot;: &quot;15&quot;,
-        &quot;total&quot;: &quot;123&quot;,
-        &quot;updated&quot;: &quot;yes&quot;
-    }, {
-        &quot;projectid&quot;: &quot;24&quot;,
-        &quot;total&quot;: &quot;123&quot;,
-        &quot;updated&quot;: &quot;yes&quot;
-    }]
-  }" mimeType="application/json" doc:name="Set Payload"/>
-        <json:json-to-object-transformer returnClass="java.util.HashMap" doc:name="JSON to Object"/>
-        <set-variable variableName="var2" value="#[message.payload]" doc:name="Variable"/>
-
-        <expression-transformer
-     expression="#[[
-
-     'Result':[
-     {
-      'projectid': 			flowVars.var1.first[0].projectid,
-      'approval_status': 	flowVars.var1.first[0].approval_status,
-      'total': 				flowVars.var2.Second[0].total
-
-    },
-    {
-     'projectid': 			flowVars.var1.first[1].projectid,
-     'approval_status': 	flowVars.var1.first[1].approval_status,
-     'total': 				flowVars.var2.Second[1].total
-
-   }
-
-  ]]
-      ]" doc:name="Expression"/>
-  <json:object-to-json-transformer doc:name="Object to JSON"/>     
-        
-    </flow>
-    <flow name="replace_value_in_jsonFlow1">
-        <http:listener config-ref="HTTP_Listener_Configuration" path="/rest1" doc:name="HTTP"/>
-        <json:json-to-object-transformer returnClass="java.lang.Object" doc:name="JSON to Object"/>
-        <logger message="#[ 'Received Payload = ' + payload ]" level="INFO" doc:name="Logger"/>
-        <foreach collection="#[message.payload.documents]" doc:name="For Each">
-            <logger message="#[&quot; ***************************** AKASH PRAJAPATI  ***************************** &quot;]" level="INFO" doc:name="Logger"/>
-            <expression-component doc:name="Expression"><![CDATA[message.payload.binaryContent = "fileContent";
-message.payload.attributes[0].id = 11;
-message.payload.attributes[1].id = 22;]]></expression-component>
-        </foreach>
-        <logger message="#[ &quot;Payload After For-Each =&quot; + payload ]" level="INFO" doc:name="Logger"/>
-
-        <json:object-to-json-transformer doc:name="Object to JSON"/>
-    </flow>
+	<flow name="replace_value_in_jsonFlow1111">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/rest11" doc:name="HTTP"/>
+		<set-payload value="#['Akash Prajapati']"  doc:name="Set Payload"/>
+		<logger message="#[ 'Received Payload = ' + payload ]" level="INFO" doc:name="Logger"/>
+	</flow>	
     
 </mule>
