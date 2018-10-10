@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" 
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+   
+   
+    <flow name="jsonschemavalidationFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/validation" allowedMethods="POST" doc:name="HTTP"/>
+         
+        <json:validate-schema schemaLocation="schema/fstab.json" doc:name="Validate Json Schema" />
+        <logger message="Schema Validated successfully" level="INFO" doc:name="Logger"/>
+        
+        <set-payload value="#[ payload ]" mimeType="application/json" doc:name="Set Payload"/>
+     	<choice-exception-strategy doc:name="Choice_Exception_Strategy">
+	     	<catch-exception-strategy when="#[ exception.causedBy(org.mule.module.json.validation.JsonSchemaValidationException) ]" doc:name="Catch Exception Strategy">
+                <set-property propertyName="#['http.status']" value="#[500]" doc:name="500"/>
+	     		<!-- 
+	     		<logger message="#['Error in Payload=' + payload]"							level="ERROR" doc:name="Logger"/>
+	     		<logger message="#['Error Message=' + exception.cause.message]"				level="ERROR" doc:name="Logger"/>	     		
+	     		<logger message="Detailed Message : #[exception.getDetailedMessage()]" 		level="INFO"  doc:name="Logger"/>
+				<logger message="Exception Code   : #[exception.getExceptionCode()]" 		level="INFO"  doc:name="Logger"/>
+				<logger message="Message Code     : #[exception.getMessageCode()]" 			level="INFO"  doc:name="Logger"/>
+				<logger message="Summary Message  : #[exception.getSummaryMessage()]" 		level="INFO"  doc:name="Logger"/>
+				<logger message="Verbose Message  : #[exception.getVerboseMessage()]" 		level="INFO"  doc:name="Logger"/>
+				<logger message="Exception Info   : #[org.mule.util.ExceptionUtils.getRootCauseMessage(exception)]"  level="INFO"  doc:name="Logger"/>
+				-->
+                <expression-component doc:name="Expression"><![CDATA[
+java.lang.String[] errorsStr = exception.getVerboseMessage().split("error: ");
+java.lang.String[] levelStr   = errorsStr[1].split("level: ");
+java.lang.String errorMsg  = levelStr[0].trim().replace("\"","'");
+payload = new java.util.HashMap();
+payload['error'] = errorMsg ;
+]]></expression-component>
+                <json:object-to-json-transformer mimeType="application/json" doc:name="Object to JSON"/>
+	 		</catch-exception-strategy>
+ 		</choice-exception-strategy>
+    </flow>
+
+</mule>
