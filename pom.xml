@@ -132,6 +132,7 @@
     </dependencies>
 
 	<repositories>
+		<!--
           <repository>
             <id>Central</id>
             <name>Central</name>
@@ -144,7 +145,19 @@
             <url>http://repository.mulesoft.org/releases/</url>
             <layout>default</layout>
         </repository>
+		
+		-->
+		
+	<repository>
+            <id>akash-maven</id>
+            <name>akash-maven</name>
+            <url>http://nexus3-sonar.13.71.84.22.nip.io/repository/akash-maven/</url>
+            <layout>default</layout>
+        </repository>
+		
     </repositories>
+	
+	<!--
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-release</id>
@@ -156,5 +169,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
+    -->
 </project>
