@@ -157,7 +157,7 @@
 		
     </repositories>
 	
-	<!--
+	
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-release</id>
@@ -169,5 +169,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-    -->
+    
 </project>
