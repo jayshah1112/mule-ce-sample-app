@@ -151,7 +151,7 @@
 	<repository>
             <id>akash-maven</id>
             <name>akash-maven</name>
-            <url>http://nexus3-sonar.13.71.84.22.nip.io/repository/akash-maven/</url>
+            <url>http://nexus3-nexus.13.71.84.22.nip.io/repository/akash-maven/</url>
             <layout>default</layout>
         </repository>
 		
